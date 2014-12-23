@@ -19,8 +19,8 @@
 package main
 
 import (
-	. "alexandria/cli/application"
-	"alexandria/cli/controllers"
+	. "github.com/cavaliercoder/alexandria-cli/application"
+	"github.com/cavaliercoder/alexandria-cli/controllers"
 	"github.com/codegangsta/cli"
 	"os"
 )

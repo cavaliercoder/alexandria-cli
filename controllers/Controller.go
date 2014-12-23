@@ -28,7 +28,7 @@ import (
 	"os"
 	"strings"
 
-	. "alexandria/cli/application"
+	. "github.com/cavaliercoder/alexandria-cli/application"
 )
 
 type Controller interface {
