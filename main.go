@@ -68,6 +68,7 @@ func main() {
 	// Add controllers
 	var err error
 	controllers := []controllers.Controller{
+		&controllers.ApiInfoController{},
 		&controllers.CITypeController{},
 		&controllers.ConfigController{},
 		&controllers.ResourceController{},
