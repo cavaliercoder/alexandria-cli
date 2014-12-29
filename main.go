@@ -39,7 +39,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:   "u, url",
-			Value:  "http://localhost:3000",
+			Value:  "http://localhost:3000/api/v1",
 			Usage:  "specify the API base URL",
 			EnvVar: "ALEX_API_URL",
 		},
