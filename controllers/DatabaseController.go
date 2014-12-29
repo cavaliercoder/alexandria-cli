@@ -31,8 +31,8 @@ func (c *DatabaseController) Init(app *cli.App) error {
 
 	c.app.Commands = append(c.app.Commands, []cli.Command{
 		{
-			Name:   "databases",
-			Usage:  "Create, retrieve, update or delete databases",
+			Name:   "cmdbs",
+			Usage:  "Create, retrieve, update or delete CMDBS",
 			Action: c.GetDatabase,
 			Subcommands: []cli.Command{
 				{
@@ -61,9 +61,9 @@ func (c *DatabaseController) Init(app *cli.App) error {
 }
 
 func (c *DatabaseController) GetDatabase(context *cli.Context) {
-	c.getResource(context, "/databases")
+	c.getResource(context, "/cmdbs")
 }
 
 func (c *DatabaseController) AddDatabase(context *cli.Context) {
-	c.addResource(context, "/databases", "")
+	c.addResource(context, "/cmdbs", "")
 }

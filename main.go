@@ -74,6 +74,7 @@ func main() {
 		&controllers.ResourceController{},
 		&controllers.TenantController{},
 		&controllers.UserController{},
+		&controllers.DatabaseController{},
 	}
 
 	for _, controller := range controllers {
