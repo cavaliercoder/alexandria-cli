@@ -16,36 +16,54 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * package controllers
  */
-package controllers
+package main
 
 import (
 	"github.com/codegangsta/cli"
-	"log"
 )
 
-type ApiInfoController struct {
+type TenantController struct {
 	controller
 }
 
-func (c *ApiInfoController) Init(app *cli.App) error {
+func (c *TenantController) Init(app *cli.App) error {
 	c.app = app
 
 	c.app.Commands = append(c.app.Commands, []cli.Command{
 		{
-			Name:   "info",
-			Usage:  "get API information",
-			Action: c.GetApiInfo,
+			Name:   "tenants",
+			Usage:  "Create, retrieve, update or delete tenants",
+			Action: c.GetTenant,
+			Subcommands: []cli.Command{
+				{
+					Name:   "get",
+					Usage:  "get tenants",
+					Action: c.GetTenant,
+				},
+				{
+					Name:   "add",
+					Usage:  "add tenants",
+					Action: c.AddTenant,
+				},
+				{
+					Name:  "update",
+					Usage: "update tenants",
+				},
+				{
+					Name:  "delete",
+					Usage: "delete tenants",
+				},
+			},
 		},
 	}...)
 
 	return nil
 }
 
-func (c *ApiInfoController) GetApiInfo(context *cli.Context) {
-	res, err := c.ApiRequest(context, "GET", "/info", nil)
-	if err != nil {
-		log.Panic(err)
-	}
+func (c *TenantController) GetTenant(context *cli.Context) {
+	c.getResource(context, "/tenants")
+}
 
-	c.ApiResult(res)
+func (c *TenantController) AddTenant(context *cli.Context) {
+	c.addResource(context, "tenants", "")
 }

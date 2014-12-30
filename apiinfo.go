@@ -16,37 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * package controllers
  */
-package controllers
+package main
 
 import (
 	"github.com/codegangsta/cli"
+	"log"
 )
 
-type ResourceController struct {
+type ApiInfoController struct {
 	controller
 }
 
-func (c *ResourceController) Init(app *cli.App) error {
+func (c *ApiInfoController) Init(app *cli.App) error {
 	c.app = app
 
 	c.app.Commands = append(c.app.Commands, []cli.Command{
 		{
-			Name:   "resources",
-			Usage:  "Create, retrieve, update or delete generic API resources",
-			Action: c.GetResource,
-			Subcommands: []cli.Command{
-				{
-					Name:   "get",
-					Usage:  "get resources",
-					Action: c.GetResource,
-				},
-			},
+			Name:   "info",
+			Usage:  "get API information",
+			Action: c.GetApiInfo,
 		},
 	}...)
 
 	return nil
 }
 
-func (c *ResourceController) GetResource(context *cli.Context) {
-	c.getResource(context, "")
+func (c *ApiInfoController) GetApiInfo(context *cli.Context) {
+	res, err := c.ApiRequest(context, "GET", "/info", nil)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	c.ApiResult(res)
 }

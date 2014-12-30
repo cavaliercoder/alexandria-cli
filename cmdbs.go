@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * package controllers
  */
-package controllers
+package main
 
 import (
 	"github.com/codegangsta/cli"

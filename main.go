@@ -19,8 +19,6 @@
 package main
 
 import (
-	. "github.com/cavaliercoder/alexandria-cli/application"
-	"github.com/cavaliercoder/alexandria-cli/controllers"
 	"github.com/codegangsta/cli"
 	"os"
 )
@@ -67,14 +65,14 @@ func main() {
 
 	// Add controllers
 	var err error
-	controllers := []controllers.Controller{
-		&controllers.ApiInfoController{},
-		&controllers.CITypeController{},
-		&controllers.ConfigController{},
-		&controllers.ResourceController{},
-		&controllers.TenantController{},
-		&controllers.UserController{},
-		&controllers.DatabaseController{},
+	controllers := []Controller{
+		&ApiInfoController{},
+		&CITypeController{},
+		&ConfigController{},
+		&ResourceController{},
+		&TenantController{},
+		&UserController{},
+		&DatabaseController{},
 	}
 
 	for _, controller := range controllers {

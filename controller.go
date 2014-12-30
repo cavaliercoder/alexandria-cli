@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * package controllers
  */
-package controllers
+package main
 
 import (
 	"github.com/codegangsta/cli"
@@ -27,8 +27,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-
-	. "github.com/cavaliercoder/alexandria-cli/application"
 )
 
 type Controller interface {

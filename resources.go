@@ -16,42 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * package controllers
  */
-package controllers
+package main
 
 import (
 	"github.com/codegangsta/cli"
 )
 
-type TenantController struct {
+type ResourceController struct {
 	controller
 }
 
-func (c *TenantController) Init(app *cli.App) error {
+func (c *ResourceController) Init(app *cli.App) error {
 	c.app = app
 
 	c.app.Commands = append(c.app.Commands, []cli.Command{
 		{
-			Name:   "tenants",
-			Usage:  "Create, retrieve, update or delete tenants",
-			Action: c.GetTenant,
+			Name:   "resources",
+			Usage:  "Create, retrieve, update or delete generic API resources",
+			Action: c.GetResource,
 			Subcommands: []cli.Command{
 				{
 					Name:   "get",
-					Usage:  "get tenants",
-					Action: c.GetTenant,
-				},
-				{
-					Name:   "add",
-					Usage:  "add tenants",
-					Action: c.AddTenant,
-				},
-				{
-					Name:  "update",
-					Usage: "update tenants",
-				},
-				{
-					Name:  "delete",
-					Usage: "delete tenants",
+					Usage:  "get resources",
+					Action: c.GetResource,
 				},
 			},
 		},
@@ -60,10 +47,6 @@ func (c *TenantController) Init(app *cli.App) error {
 	return nil
 }
 
-func (c *TenantController) GetTenant(context *cli.Context) {
-	c.getResource(context, "/tenants")
-}
-
-func (c *TenantController) AddTenant(context *cli.Context) {
-	c.addResource(context, "tenants", "")
+func (c *ResourceController) GetResource(context *cli.Context) {
+	c.getResource(context, "")
 }
