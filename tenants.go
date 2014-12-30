@@ -61,9 +61,9 @@ func (c *TenantController) Init(app *cli.App) error {
 }
 
 func (c *TenantController) GetTenant(context *cli.Context) {
-	c.getResource(context, "/tenants")
+	c.getResource("/tenants")
 }
 
 func (c *TenantController) AddTenant(context *cli.Context) {
-	c.addResource(context, "tenants", "")
+	c.addResource("/tenants", "")
 }

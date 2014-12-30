@@ -75,8 +75,6 @@ func main() {
 	controllers := []Controller{
 		&ApiInfoController{},
 		&CITypeController{},
-		&ConfigController{},
-		&ResourceController{},
 		&TenantController{},
 		&UserController{},
 		&DatabaseController{},

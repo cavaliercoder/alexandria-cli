@@ -42,7 +42,7 @@ func (c *ApiInfoController) Init(app *cli.App) error {
 }
 
 func (c *ApiInfoController) GetApiInfo(context *cli.Context) {
-	res, err := c.ApiRequest(context, "GET", "/info", nil)
+	res, err := c.ApiRequest("GET", "/info", nil)
 	if err != nil {
 		log.Panic(err)
 	}

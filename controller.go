@@ -19,10 +19,9 @@
 package main
 
 import (
-	"github.com/codegangsta/cli"
-
 	"errors"
 	"fmt"
+	"github.com/codegangsta/cli"
 	"io"
 	"net/http"
 	"os"
@@ -37,7 +36,8 @@ type controller struct {
 	app *cli.App
 }
 
-func (c *controller) ApiRequest(context *cli.Context, method string, path string, body io.Reader) (*http.Response, error) {
+func (c *controller) ApiRequest(method string, path string, body io.Reader) (*http.Response, error) {
+	context := GetContext()
 	url := context.GlobalString("url")
 	apiKey := context.GlobalString("api-key")
 
@@ -86,8 +86,9 @@ func (c *controller) ApiError(res *http.Response) {
 	Die(res.Status)
 }
 
-func (c *controller) getResource(context *cli.Context, path string) {
+func (c *controller) getResource(path string) {
 	// Get requested resource ID from first command argument
+	context := GetContext()
 	id := context.Args().First()
 
 	var err error
@@ -98,7 +99,7 @@ func (c *controller) getResource(context *cli.Context, path string) {
 		path = fmt.Sprintf("%s/%s", path, id)
 	}
 
-	res, err = c.ApiRequest(context, "GET", path, nil)
+	res, err = c.ApiRequest("GET", path, nil)
 	if err != nil {
 		Die(err)
 	}
@@ -113,7 +114,8 @@ func (c *controller) getResource(context *cli.Context, path string) {
 	}
 }
 
-func (c *controller) addResource(context *cli.Context, path string, resource string) {
+func (c *controller) addResource(path string, resource string) {
+	context := GetContext()
 	// Decode the resource from STDIN or from the first command argument?
 	var input io.Reader
 	if context.GlobalBool("stdin") {
@@ -126,7 +128,7 @@ func (c *controller) addResource(context *cli.Context, path string, resource str
 		input = strings.NewReader(resource)
 	}
 
-	res, err := c.ApiRequest(context, "POST", path, input)
+	res, err := c.ApiRequest("POST", path, input)
 	defer res.Body.Close()
 	if err != nil {
 		Die(err)
@@ -139,7 +141,8 @@ func (c *controller) addResource(context *cli.Context, path string, resource str
 	}
 }
 
-func (c *controller) deleteResource(context *cli.Context, path string) {
+func (c *controller) deleteResource(path string) {
+	context := GetContext()
 	// Get requested resource ID from first command argument
 	id := context.Args().First()
 
@@ -152,7 +155,7 @@ func (c *controller) deleteResource(context *cli.Context, path string) {
 
 	path = fmt.Sprintf("%s/%s", path, id)
 
-	res, err = c.ApiRequest(context, "DELETE", path, nil)
+	res, err = c.ApiRequest("DELETE", path, nil)
 	if err != nil {
 		Die(err)
 	}

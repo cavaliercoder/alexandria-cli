@@ -62,13 +62,13 @@ func (c *CITypeController) Init(app *cli.App) error {
 }
 
 func (c *CITypeController) GetCIType(context *cli.Context) {
-	c.getResource(context, "/types")
+	c.getResource("/types")
 }
 
 func (c *CITypeController) AddCIType(context *cli.Context) {
-	c.addResource(context, "/types", "")
+	c.addResource("/types", "")
 }
 
 func (c *CITypeController) DeleteCIType(context *cli.Context) {
-	c.deleteResource(context, "/types")
+	c.deleteResource("/types")
 }

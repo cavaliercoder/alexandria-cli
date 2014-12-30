@@ -61,9 +61,9 @@ func (c *DatabaseController) Init(app *cli.App) error {
 }
 
 func (c *DatabaseController) GetDatabase(context *cli.Context) {
-	c.getResource(context, "/cmdbs")
+	c.getResource("/cmdbs")
 }
 
 func (c *DatabaseController) AddDatabase(context *cli.Context) {
-	c.addResource(context, "/cmdbs", "")
+	c.addResource("/cmdbs", "")
 }

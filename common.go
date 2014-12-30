@@ -33,6 +33,10 @@ func SetContext(c *cli.Context) error {
 	return nil
 }
 
+func GetContext() *cli.Context {
+	return context
+}
+
 func Die(message interface{}) {
 	fmt.Fprintf(os.Stderr, "Fatal: %s\n", message)
 	os.Exit(1)

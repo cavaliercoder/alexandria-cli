@@ -62,13 +62,13 @@ func (c *UserController) Init(app *cli.App) error {
 }
 
 func (c *UserController) GetUser(context *cli.Context) {
-	c.getResource(context, "/users")
+	c.getResource("/users")
 }
 
 func (c *UserController) CreateUser(context *cli.Context) {
-	c.addResource(context, "/users", "")
+	c.addResource("/users", "")
 }
 
 func (c *UserController) DeleteUser(context *cli.Context) {
-	c.deleteResource(context, "/users")
+	c.deleteResource("/users")
 }
