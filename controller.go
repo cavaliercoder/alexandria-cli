@@ -51,7 +51,7 @@ func (c *controller) ApiRequest(context *cli.Context, method string, path string
 
 	// Formulate request URL
 	url = fmt.Sprintf("%s%s?pretty=true", url, path)
-	DPrint(fmt.Sprintf("API Request: %s %s", method, url))
+	Dprintf("API Request: %s %s", method, url)
 
 	// Create a HTTP client that does not follow redirects
 	// This allows 'Location' headers to be printed to the CLI

@@ -19,8 +19,12 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
 	"github.com/codegangsta/cli"
 	"os"
+	"os/user"
+	"regexp"
 )
 
 var app *cli.App
@@ -63,6 +67,9 @@ func main() {
 
 	app.Before = SetContext
 
+	// Load config from ~/.alexrc
+	LoadRc()
+
 	// Add controllers
 	var err error
 	controllers := []Controller{
@@ -83,4 +90,45 @@ func main() {
 	}
 
 	app.Run(os.Args)
+}
+
+// LoadRc loads configuration settings from ~/.alexrc using a simple
+// KEY="value" format. The KEY field should reflect an available
+// environment variable setting as described with --help
+func LoadRc() {
+	usr, _ := user.Current()
+	path := fmt.Sprintf("%s/.alexrc", usr.HomeDir)
+
+	// Open ~/.alexrc
+	file, err := os.Open(path)
+	if err != nil {
+		return
+	}
+	defer file.Close()
+
+	// Read each line
+	lineNo := 0
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lineNo++
+		line := scanner.Text()
+
+		// Skip comments and blank lines
+		if match, _ := regexp.MatchString("^(#.*|\\s*)$", line); match {
+			continue
+		}
+
+		// Parse key/vals
+		r := regexp.MustCompile(`^(\w+)=(.+)$`)
+		matches := r.FindStringSubmatch(line)
+		if matches == nil {
+			Warnf("%s:%d Invalid declaration: %s", path, lineNo, line)
+			continue
+		}
+
+		key := matches[1]
+		val := matches[2]
+
+		os.Setenv(key, val)
+	}
 }

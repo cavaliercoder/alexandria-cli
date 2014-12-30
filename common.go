@@ -34,14 +34,30 @@ func SetContext(c *cli.Context) error {
 }
 
 func Die(message interface{}) {
-	fmt.Fprintf(os.Stderr, "%s\n", message)
+	fmt.Fprintf(os.Stderr, "Fatal: %s\n", message)
 	os.Exit(1)
 }
 
-func DPrint(message interface{}) {
+func Dief(format string, a ...interface{}) {
+	Die(fmt.Sprintf(format, a...))
+}
+
+func Warn(message interface{}) {
+	fmt.Fprintf(os.Stderr, "Warning: %s\n", message)
+}
+
+func Warnf(format string, a ...interface{}) {
+	Warn(fmt.Sprintf(format, a...))
+}
+
+func Dprint(message interface{}) {
 	if context.GlobalBool("debug") {
-		fmt.Fprintf(os.Stderr, "DEBUG: %s\n", message)
+		fmt.Fprintf(os.Stderr, "Debug: %s\n", message)
 	}
+}
+
+func Dprintf(format string, a ...interface{}) {
+	Dprint(fmt.Sprintf(format, a...))
 }
 
 func DPipeToStderr(reader io.Reader) {
@@ -53,7 +69,7 @@ func DPipeToStderr(reader io.Reader) {
 		for err == nil {
 			line, _, err = buf.ReadLine()
 
-			DPrint(line)
+			Dprint(line)
 		}
 	}
 }
