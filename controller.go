@@ -43,10 +43,10 @@ func (c *controller) ApiRequest(context *cli.Context, method string, path string
 
 	// Validate URL and API Key
 	if url == "" {
-		Die("API base URL not specified\n")
+		Die("API base URL not specified")
 	}
 	if apiKey == "" {
-		Die("API authentication key not specified\n")
+		Die("API authentication key not specified")
 	}
 
 	// Formulate request URL
@@ -83,10 +83,7 @@ func (c *controller) ApiResult(res *http.Response) {
 }
 
 func (c *controller) ApiError(res *http.Response) {
-	fmt.Fprintf(os.Stderr, "%s\n", res.Status)
-	//io.Copy(os.Stderr, res.Body)
-	//fmt.Fprintf(os.Stderr, "\n")
-	os.Exit(1)
+	Die(res.Status)
 }
 
 func (c *controller) getResource(context *cli.Context, path string) {
