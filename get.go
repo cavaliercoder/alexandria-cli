@@ -22,37 +22,45 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-type DatabaseController struct {
+type GetController struct {
 	controller
 }
 
-func (c *DatabaseController) Init(app *cli.App) error {
+func (c *GetController) Init(app *cli.App) error {
 	c.app = app
-	c.baseUrl = "/cmdbs"
 
 	c.app.Commands = append(c.app.Commands, []cli.Command{
 		{
-			Name:  "cmdbs",
-			Usage: "Create, retrieve, update or delete CMDBS",
+			Name:  "get",
+			Usage: "Retrieve API resources",
 			Subcommands: []cli.Command{
 				{
-					Name:   "get",
-					Usage:  "get databases",
-					Action: c.GetResourceAction,
+					Name:  "info",
+					Usage: "get API information",
+					Action: func(context *cli.Context) {
+						c.GetResource("/info")
+					},
 				},
 				{
-					Name:   "add",
-					Usage:  "add a database",
-					Action: c.AddResourceAction,
+					Name:  "users",
+					Usage: "get users",
+					Action: func(context *cli.Context) {
+						c.GetResource("/users/%s", context.Args().First())
+					},
 				},
 				{
-					Name:  "update",
-					Usage: "update databases",
+					Name:  "tenants",
+					Usage: "get tenants",
+					Action: func(context *cli.Context) {
+						c.GetResource("/tenants/%s", context.Args().First())
+					},
 				},
 				{
-					Name:   "delete",
-					Usage:  "delete databases",
-					Action: c.DeleteResourceAction,
+					Name:  "cmdbs",
+					Usage: "get CMDBs",
+					Action: func(context *cli.Context) {
+						c.GetResource("/cmdbs/%s", context.Args().First())
+					},
 				},
 			},
 		},

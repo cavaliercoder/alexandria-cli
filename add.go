@@ -22,37 +22,38 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-type CITypeController struct {
+type AddController struct {
 	controller
 }
 
-func (c *CITypeController) Init(app *cli.App) error {
+func (c *AddController) Init(app *cli.App) error {
 	c.app = app
-	c.baseUrl = "/citypes"
 
 	c.app.Commands = append(c.app.Commands, []cli.Command{
 		{
-			Name:  "types",
-			Usage: "Create, retrieve, update or delete CI types",
+			Name:  "add",
+			Usage: "Create API resources",
 			Subcommands: []cli.Command{
 				{
-					Name:   "get",
-					Usage:  "get types",
-					Action: c.GetResourceAction,
+					Name:  "user",
+					Usage: "add a user",
+					Action: func(context *cli.Context) {
+						c.AddResource("/users", context.Args().First())
+					},
 				},
 				{
-					Name:   "add",
-					Usage:  "add types",
-					Action: c.AddResourceAction,
+					Name:  "tenant",
+					Usage: "get a tenant",
+					Action: func(context *cli.Context) {
+						c.AddResource("/tenants", context.Args().First())
+					},
 				},
 				{
-					Name:  "update",
-					Usage: "update types",
-				},
-				{
-					Name:   "delete",
-					Usage:  "delete types",
-					Action: c.DeleteResourceAction,
+					Name:  "cmdb",
+					Usage: "add a CMDB",
+					Action: func(context *cli.Context) {
+						c.AddResource("/cmdbs", context.Args().First())
+					},
 				},
 			},
 		},

@@ -33,8 +33,7 @@ type Controller interface {
 }
 
 type controller struct {
-	app     *cli.App
-	baseUrl string
+	app *cli.App
 }
 
 func (c *controller) ApiRequest(method string, path string, body io.Reader) (*http.Response, error) {
@@ -110,10 +109,6 @@ func (c *controller) AddResource(path string, resource string) {
 	}
 }
 
-func (c *controller) AddResourceAction(context *cli.Context) {
-	c.AddResource(c.baseUrl, context.Args().First())
-}
-
 func (c *controller) GetResource(format string, a ...interface{}) {
 	// Get requested resource ID from first command argument
 	var err error
@@ -135,10 +130,6 @@ func (c *controller) GetResource(format string, a ...interface{}) {
 	}
 }
 
-func (c *controller) GetResourceAction(context *cli.Context) {
-	c.GetResource("%s/%s", c.baseUrl, context.Args().First())
-}
-
 func (c *controller) DeleteResource(format string, a ...interface{}) {
 	var err error
 	var res *http.Response
@@ -157,12 +148,4 @@ func (c *controller) DeleteResource(format string, a ...interface{}) {
 	default:
 		c.ApiError(res)
 	}
-}
-
-func (c *controller) DeleteResourceAction(context *cli.Context) {
-	id := context.Args().First()
-	if id == "" {
-		Die("No resource specified for deletion")
-	}
-	c.DeleteResource("%s/%s", c.baseUrl, id)
 }

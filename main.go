@@ -52,10 +52,6 @@ func main() {
 			EnvVar: "ALEX_API_KEY",
 		},
 		cli.BoolFlag{
-			Name:  "i, stdin",
-			Usage: "read request body from stdin",
-		},
-		cli.BoolFlag{
 			Name:  "verbose",
 			Usage: "Show more output",
 		},
@@ -66,6 +62,7 @@ func main() {
 		},
 	}
 
+	// Make context available globally
 	app.Before = SetContext
 
 	// Load config from ~/.alexrc
@@ -74,11 +71,9 @@ func main() {
 	// Add controllers
 	var err error
 	controllers := []Controller{
-		&ApiInfoController{},
-		&CITypeController{},
-		&TenantController{},
-		&UserController{},
-		&DatabaseController{},
+		&GetController{},
+		&AddController{},
+		&DeleteController{},
 	}
 
 	for _, controller := range controllers {
@@ -128,6 +123,7 @@ func LoadRc() {
 		key := matches[1]
 		val := strings.Trim(matches[2], "\" ")
 
+		// Set environment variables locally
 		os.Setenv(key, val)
 	}
 }
