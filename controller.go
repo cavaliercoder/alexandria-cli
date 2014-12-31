@@ -97,9 +97,11 @@ func (c *controller) AddResource(path string, resource string) {
 	}
 
 	res, err := c.ApiRequest("POST", path, input)
-	defer res.Body.Close()
 	if err != nil {
 		Die(err)
+	}
+	if res.Body != nil {
+		defer res.Body.Close()
 	}
 
 	switch res.StatusCode {
