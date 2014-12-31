@@ -84,7 +84,7 @@ func (c *controller) ApiResult(res *http.Response) {
 }
 
 func (c *controller) ApiError(res *http.Response) {
-	Die(res.Status)
+	Dief("Unexpected response: %s", res.Status)
 }
 
 func (c *controller) AddResource(path string, resource string) {
