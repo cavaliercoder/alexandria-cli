@@ -102,9 +102,12 @@ func (c *controller) AddResource(path string, resource string) {
 		Die(err)
 	}
 
-	if res.StatusCode == http.StatusCreated {
+	switch res.StatusCode {
+	case http.StatusCreated:
 		fmt.Printf("Created %s\n", res.Header.Get("Location"))
-	} else {
+	case http.StatusConflict:
+		Die("Resource conflicts with an existing resource")
+	default:
 		c.ApiError(res)
 	}
 }
