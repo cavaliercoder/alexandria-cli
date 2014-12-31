@@ -37,6 +37,10 @@ func GetContext() *cli.Context {
 	return context
 }
 
+func NotifyStdin() {
+	fmt.Fprint(os.Stderr, "Reading from stdin... Press Ctrl-D to end or Ctrl-C to cancel\n")
+}
+
 func Die(message interface{}) {
 	fmt.Fprintf(os.Stderr, "Fatal: %s\n", message)
 	os.Exit(1)

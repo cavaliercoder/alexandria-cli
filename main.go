@@ -25,6 +25,7 @@ import (
 	"os"
 	"os/user"
 	"regexp"
+	"strings"
 )
 
 var app *cli.App
@@ -125,7 +126,7 @@ func LoadRc() {
 		}
 
 		key := matches[1]
-		val := matches[2]
+		val := strings.Trim(matches[2], "\" ")
 
 		os.Setenv(key, val)
 	}

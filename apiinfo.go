@@ -20,7 +20,6 @@ package main
 
 import (
 	"github.com/codegangsta/cli"
-	"log"
 )
 
 type ApiInfoController struct {
@@ -29,6 +28,7 @@ type ApiInfoController struct {
 
 func (c *ApiInfoController) Init(app *cli.App) error {
 	c.app = app
+	c.baseUrl = "/info"
 
 	c.app.Commands = append(c.app.Commands, []cli.Command{
 		{
@@ -42,10 +42,5 @@ func (c *ApiInfoController) Init(app *cli.App) error {
 }
 
 func (c *ApiInfoController) GetApiInfo(context *cli.Context) {
-	res, err := c.ApiRequest("GET", "/info", nil)
-	if err != nil {
-		log.Panic(err)
-	}
-
-	c.ApiResult(res)
+	c.GetResource(c.baseUrl)
 }

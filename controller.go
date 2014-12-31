@@ -33,7 +33,8 @@ type Controller interface {
 }
 
 type controller struct {
-	app *cli.App
+	app     *cli.App
+	baseUrl string
 }
 
 func (c *controller) ApiRequest(method string, path string, body io.Reader) (*http.Response, error) {
@@ -86,45 +87,13 @@ func (c *controller) ApiError(res *http.Response) {
 	Die(res.Status)
 }
 
-func (c *controller) getResource(path string) {
-	// Get requested resource ID from first command argument
-	context := GetContext()
-	id := context.Args().First()
-
-	var err error
-	var res *http.Response
-
-	if id != "" {
-		// Get one by id
-		path = fmt.Sprintf("%s/%s", path, id)
-	}
-
-	res, err = c.ApiRequest("GET", path, nil)
-	if err != nil {
-		Die(err)
-	}
-
-	switch res.StatusCode {
-	case http.StatusOK:
-		c.ApiResult(res)
-	case http.StatusNotFound:
-		Die(fmt.Sprintf("No such resource found at %s", path))
-	default:
-		c.ApiError(res)
-	}
-}
-
-func (c *controller) addResource(path string, resource string) {
-	context := GetContext()
+func (c *controller) AddResource(path string, resource string) {
 	// Decode the resource from STDIN or from the first command argument?
 	var input io.Reader
-	if context.GlobalBool("stdin") {
+	if resource == "" {
+		NotifyStdin()
 		input = os.Stdin
 	} else {
-		if resource == "" {
-			resource = context.Args().First()
-		}
-
 		input = strings.NewReader(resource)
 	}
 
@@ -141,20 +110,40 @@ func (c *controller) addResource(path string, resource string) {
 	}
 }
 
-func (c *controller) deleteResource(path string) {
-	context := GetContext()
-	// Get requested resource ID from first command argument
-	id := context.Args().First()
+func (c *controller) AddResourceAction(context *cli.Context) {
+	c.AddResource(c.baseUrl, context.Args().First())
+}
 
+func (c *controller) GetResource(format string, a ...interface{}) {
+	// Get requested resource ID from first command argument
 	var err error
 	var res *http.Response
 
-	if id == "" {
-		Die("No user specified")
+	path := strings.TrimRight(fmt.Sprintf(format, a...), "/")
+	res, err = c.ApiRequest("GET", path, nil)
+	if err != nil {
+		Die(err)
 	}
 
-	path = fmt.Sprintf("%s/%s", path, id)
+	switch res.StatusCode {
+	case http.StatusOK:
+		c.ApiResult(res)
+	case http.StatusNotFound:
+		Die(fmt.Sprintf("No such resource found at %s", path))
+	default:
+		c.ApiError(res)
+	}
+}
 
+func (c *controller) GetResourceAction(context *cli.Context) {
+	c.GetResource("%s/%s", c.baseUrl, context.Args().First())
+}
+
+func (c *controller) DeleteResource(format string, a ...interface{}) {
+	var err error
+	var res *http.Response
+
+	path := fmt.Sprintf(format, a...)
 	res, err = c.ApiRequest("DELETE", path, nil)
 	if err != nil {
 		Die(err)
@@ -168,4 +157,12 @@ func (c *controller) deleteResource(path string) {
 	default:
 		c.ApiError(res)
 	}
+}
+
+func (c *controller) DeleteResourceAction(context *cli.Context) {
+	id := context.Args().First()
+	if id == "" {
+		Die("No resource specified for deletion")
+	}
+	c.DeleteResource("%s/%s", c.baseUrl, id)
 }

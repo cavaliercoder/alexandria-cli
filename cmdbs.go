@@ -28,42 +28,35 @@ type DatabaseController struct {
 
 func (c *DatabaseController) Init(app *cli.App) error {
 	c.app = app
+	c.baseUrl = "/cmdbs"
 
 	c.app.Commands = append(c.app.Commands, []cli.Command{
 		{
-			Name:   "cmdbs",
-			Usage:  "Create, retrieve, update or delete CMDBS",
-			Action: c.GetDatabase,
+			Name:  "cmdbs",
+			Usage: "Create, retrieve, update or delete CMDBS",
 			Subcommands: []cli.Command{
 				{
 					Name:   "get",
 					Usage:  "get databases",
-					Action: c.GetDatabase,
+					Action: c.GetResourceAction,
 				},
 				{
 					Name:   "add",
 					Usage:  "add a database",
-					Action: c.AddDatabase,
+					Action: c.AddResourceAction,
 				},
 				{
 					Name:  "update",
 					Usage: "update databases",
 				},
 				{
-					Name:  "delete",
-					Usage: "delete databases",
+					Name:   "delete",
+					Usage:  "delete databases",
+					Action: c.DeleteResourceAction,
 				},
 			},
 		},
 	}...)
 
 	return nil
-}
-
-func (c *DatabaseController) GetDatabase(context *cli.Context) {
-	c.getResource("/cmdbs")
-}
-
-func (c *DatabaseController) AddDatabase(context *cli.Context) {
-	c.addResource("/cmdbs", "")
 }

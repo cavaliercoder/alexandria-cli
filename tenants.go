@@ -28,42 +28,35 @@ type TenantController struct {
 
 func (c *TenantController) Init(app *cli.App) error {
 	c.app = app
+	c.baseUrl = "/tenants"
 
 	c.app.Commands = append(c.app.Commands, []cli.Command{
 		{
-			Name:   "tenants",
-			Usage:  "Create, retrieve, update or delete tenants",
-			Action: c.GetTenant,
+			Name:  "tenants",
+			Usage: "Create, retrieve, update or delete tenants",
 			Subcommands: []cli.Command{
 				{
 					Name:   "get",
 					Usage:  "get tenants",
-					Action: c.GetTenant,
+					Action: c.GetResourceAction,
 				},
 				{
 					Name:   "add",
 					Usage:  "add tenants",
-					Action: c.AddTenant,
+					Action: c.AddResourceAction,
 				},
 				{
 					Name:  "update",
 					Usage: "update tenants",
 				},
 				{
-					Name:  "delete",
-					Usage: "delete tenants",
+					Name:   "delete",
+					Usage:  "delete tenants",
+					Action: c.DeleteResourceAction,
 				},
 			},
 		},
 	}...)
 
 	return nil
-}
-
-func (c *TenantController) GetTenant(context *cli.Context) {
-	c.getResource("/tenants")
-}
-
-func (c *TenantController) AddTenant(context *cli.Context) {
-	c.addResource("/tenants", "")
 }

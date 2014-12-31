@@ -28,22 +28,22 @@ type UserController struct {
 
 func (c *UserController) Init(app *cli.App) error {
 	c.app = app
+	c.baseUrl = "/users"
 
 	c.app.Commands = append(c.app.Commands, []cli.Command{
 		{
 			Name:  "users",
 			Usage: "Create, retrieve, update or delete users",
-			//Action: c.GetUser,
 			Subcommands: []cli.Command{
 				{
 					Name:   "get",
 					Usage:  "get users",
-					Action: c.GetUser,
+					Action: c.GetResourceAction,
 				},
 				{
 					Name:   "add",
 					Usage:  "add a user",
-					Action: c.CreateUser,
+					Action: c.AddResourceAction,
 				},
 				{
 					Name:  "update",
@@ -52,23 +52,11 @@ func (c *UserController) Init(app *cli.App) error {
 				{
 					Name:   "delete",
 					Usage:  "delete users",
-					Action: c.DeleteUser,
+					Action: c.DeleteResourceAction,
 				},
 			},
 		},
 	}...)
 
 	return nil
-}
-
-func (c *UserController) GetUser(context *cli.Context) {
-	c.getResource("/users")
-}
-
-func (c *UserController) CreateUser(context *cli.Context) {
-	c.addResource("/users", "")
-}
-
-func (c *UserController) DeleteUser(context *cli.Context) {
-	c.deleteResource("/users")
 }

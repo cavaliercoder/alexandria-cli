@@ -28,22 +28,22 @@ type CITypeController struct {
 
 func (c *CITypeController) Init(app *cli.App) error {
 	c.app = app
+	c.baseUrl = "/citypes"
 
 	c.app.Commands = append(c.app.Commands, []cli.Command{
 		{
-			Name:   "types",
-			Usage:  "Create, retrieve, update or delete CI types",
-			Action: c.GetCIType,
+			Name:  "types",
+			Usage: "Create, retrieve, update or delete CI types",
 			Subcommands: []cli.Command{
 				{
 					Name:   "get",
 					Usage:  "get types",
-					Action: c.GetCIType,
+					Action: c.GetResourceAction,
 				},
 				{
 					Name:   "add",
 					Usage:  "add types",
-					Action: c.AddCIType,
+					Action: c.AddResourceAction,
 				},
 				{
 					Name:  "update",
@@ -52,23 +52,11 @@ func (c *CITypeController) Init(app *cli.App) error {
 				{
 					Name:   "delete",
 					Usage:  "delete types",
-					Action: c.DeleteCIType,
+					Action: c.DeleteResourceAction,
 				},
 			},
 		},
 	}...)
 
 	return nil
-}
-
-func (c *CITypeController) GetCIType(context *cli.Context) {
-	c.getResource("/types")
-}
-
-func (c *CITypeController) AddCIType(context *cli.Context) {
-	c.addResource("/types", "")
-}
-
-func (c *CITypeController) DeleteCIType(context *cli.Context) {
-	c.deleteResource("/types")
 }
