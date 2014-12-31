@@ -19,6 +19,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/codegangsta/cli"
 )
 
@@ -53,6 +54,13 @@ func (c *AddController) Init(app *cli.App) error {
 					Usage: "add a CMDB",
 					Action: func(context *cli.Context) {
 						c.AddResource("/cmdbs", context.Args().First())
+					},
+				},
+				{
+					Name:  "citype",
+					Usage: "add a CI Types",
+					Action: func(context *cli.Context) {
+						c.AddResource(fmt.Sprintf("/cmdbs/%s/citypes", context.GlobalString("cmdb")), context.Args().First())
 					},
 				},
 			},

@@ -51,6 +51,12 @@ func main() {
 			Usage:  "specify the API authentication key",
 			EnvVar: "ALEX_API_KEY",
 		},
+		cli.StringFlag{
+			Name:   "c, cmdb",
+			Value:  "default",
+			Usage:  "specify the CMDB to use for CI queries",
+			EnvVar: "ALEX_CMDB",
+		},
 		cli.BoolFlag{
 			Name:  "verbose",
 			Usage: "Show more output",

@@ -19,6 +19,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/codegangsta/cli"
 )
 
@@ -53,6 +54,13 @@ func (c *DeleteController) Init(app *cli.App) error {
 					Usage: "add a CMDB",
 					Action: func(context *cli.Context) {
 						c.DeleteResourceAction(context, "/cmdbs")
+					},
+				},
+				{
+					Name:  "citype",
+					Usage: "delete a CI Type",
+					Action: func(context *cli.Context) {
+						c.DeleteResourceAction(context, fmt.Sprintf("/cmdbs/%s/citypes", context.GlobalString("cmdb")))
 					},
 				},
 			},

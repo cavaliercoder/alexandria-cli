@@ -62,6 +62,13 @@ func (c *GetController) Init(app *cli.App) error {
 						c.GetResource("/cmdbs/%s", context.Args().First())
 					},
 				},
+				{
+					Name:  "citypes",
+					Usage: "get CI Types",
+					Action: func(context *cli.Context) {
+						c.GetResource("/cmdbs/%s/citypes/%s", context.GlobalString("cmdb"), context.Args().First())
+					},
+				},
 			},
 		},
 	}...)
