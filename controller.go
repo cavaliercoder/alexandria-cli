@@ -114,6 +114,37 @@ func (c *controller) AddResource(path string, resource string) {
 	}
 }
 
+func (c *controller) UpdateResource(path string, resource string) {
+
+	// Decode the resource from STDIN or from the first command argument?
+	var input io.Reader
+	if resource == "" {
+		NotifyStdin()
+		input = os.Stdin
+	} else {
+		input = strings.NewReader(resource)
+	}
+
+	res, err := c.ApiRequest("PUT", path, input)
+	if err != nil {
+		Die(err)
+	}
+	if res.Body != nil {
+		defer res.Body.Close()
+	}
+
+	switch res.StatusCode {
+	case http.StatusNoContent:
+		fmt.Printf("Updated %s\n", path)
+	case http.StatusMovedPermanently:
+		fmt.Printf("Updated %s (relocated to %s)\n", path, res.Header.Get("Location"))
+	case http.StatusNotFound:
+		Die(fmt.Sprintf("No such resource found at %s", path))
+	default:
+		c.ApiError(res)
+	}
+}
+
 func (c *controller) GetResource(format string, a ...interface{}) {
 	// Get requested resource ID from first command argument
 	var err error

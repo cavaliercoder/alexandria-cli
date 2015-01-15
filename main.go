@@ -80,6 +80,7 @@ func main() {
 		&GetController{},
 		&AddController{},
 		&DeleteController{},
+		&UpdateController{},
 	}
 
 	for _, controller := range controllers {
