@@ -87,6 +87,7 @@ func main() {
 		&AddController{},
 		&DeleteController{},
 		&UpdateController{},
+		&BatchController{},
 	}
 
 	for _, controller := range controllers {
