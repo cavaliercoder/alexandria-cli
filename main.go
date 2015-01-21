@@ -57,6 +57,12 @@ func main() {
 			Usage:  "specify the CMDB to use for CI queries",
 			EnvVar: "ALEX_CMDB",
 		},
+		cli.StringFlag{
+			Name:   "f, format",
+			Value:  "json",
+			Usage:  "specify input and output format",
+			EnvVar: "ALEX_FORMAT",
+		},
 		cli.BoolFlag{
 			Name:  "verbose",
 			Usage: "Show more output",

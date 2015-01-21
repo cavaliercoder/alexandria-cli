@@ -40,6 +40,7 @@ func (c *controller) ApiRequest(method string, path string, body io.Reader) (*ht
 	context := GetContext()
 	url := context.GlobalString("url")
 	apiKey := context.GlobalString("api-key")
+	format := context.GlobalString("format")
 
 	// Validate URL and API Key
 	if url == "" {
@@ -50,7 +51,7 @@ func (c *controller) ApiRequest(method string, path string, body io.Reader) (*ht
 	}
 
 	// Formulate request URL
-	url = fmt.Sprintf("%s%s?pretty=true", url, path)
+	url = fmt.Sprintf("%s%s?format=%s&pretty=true", url, path, format)
 	Dprintf("API Request: %s %s", method, url)
 
 	// Create a HTTP client that does not follow redirects
