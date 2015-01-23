@@ -24,6 +24,7 @@ import (
 	"github.com/codegangsta/cli"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 )
@@ -51,7 +52,11 @@ func (c *controller) ApiRequest(method string, path string, body io.Reader) (*ht
 	}
 
 	// Formulate request URL
-	url = fmt.Sprintf("%s%s?format=%s&pretty=true", url, path, format)
+	if strings.Contains(path, "?") {
+		url = fmt.Sprintf("%s%s&format=%s&pretty=true", url, path, format)
+	} else {
+		url = fmt.Sprintf("%s%s?format=%s&pretty=true", url, path, format)
+	}
 	Dprintf("API Request: %s %s", method, url)
 
 	// Create a HTTP client that does not follow redirects
@@ -146,12 +151,17 @@ func (c *controller) UpdateResource(path string, resource string) {
 	}
 }
 
-func (c *controller) GetResource(format string, a ...interface{}) {
+func (c *controller) GetResource(sel string, format string, a ...interface{}) {
 	// Get requested resource ID from first command argument
 	var err error
 	var res *http.Response
 
 	path := strings.TrimRight(fmt.Sprintf(format, a...), "/")
+
+	if sel != "" {
+		path = fmt.Sprintf("%s?select=%s", path, url.QueryEscape(sel))
+	}
+
 	res, err = c.ApiRequest("GET", path, nil)
 	if err != nil {
 		Die(err)

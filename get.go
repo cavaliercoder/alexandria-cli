@@ -29,6 +29,11 @@ type GetController struct {
 func (c *GetController) Init(app *cli.App) error {
 	c.app = app
 
+	selFlag := cli.StringFlag{
+		Name:  "s, select",
+		Usage: "specify which fields to return",
+	}
+
 	c.app.Commands = append(c.app.Commands, []cli.Command{
 		{
 			Name:  "get",
@@ -38,35 +43,39 @@ func (c *GetController) Init(app *cli.App) error {
 					Name:  "info",
 					Usage: "get API information",
 					Action: func(context *cli.Context) {
-						c.GetResource("/info")
+						c.GetResource("", "/info")
 					},
 				},
 				{
 					Name:  "users",
 					Usage: "get users",
+					Flags: []cli.Flag{selFlag},
 					Action: func(context *cli.Context) {
-						c.GetResource("/users/%s", context.Args().First())
+						c.GetResource(context.String("select"), "/users/%s", context.Args().First())
 					},
 				},
 				{
 					Name:  "tenants",
 					Usage: "get tenants",
+					Flags: []cli.Flag{selFlag},
 					Action: func(context *cli.Context) {
-						c.GetResource("/tenants/%s", context.Args().First())
+						c.GetResource(context.String("select"), "/tenants/%s", context.Args().First())
 					},
 				},
 				{
 					Name:  "cmdbs",
 					Usage: "get CMDBs",
+					Flags: []cli.Flag{selFlag},
 					Action: func(context *cli.Context) {
-						c.GetResource("/cmdbs/%s", context.Args().First())
+						c.GetResource(context.String("select"), "/cmdbs/%s", context.Args().First())
 					},
 				},
 				{
 					Name:  "citypes",
 					Usage: "get CI Types",
+					Flags: []cli.Flag{selFlag},
 					Action: func(context *cli.Context) {
-						c.GetResource("/cmdbs/%s/citypes/%s", context.GlobalString("cmdb"), context.Args().First())
+						c.GetResource(context.String("select"), "/cmdbs/%s/citypes/%s", context.GlobalString("cmdb"), context.Args().First())
 					},
 				},
 			},
