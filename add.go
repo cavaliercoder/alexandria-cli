@@ -70,7 +70,6 @@ func (c *AddController) Init(app *cli.App) error {
 						citype := context.Args().First()
 						body := context.Args().Get(1)
 
-						fmt.Printf("CI Type: %v\nBody: %#v\n", citype, body)
 						c.AddResource(fmt.Sprintf("/cmdbs/%s/%s", context.GlobalString("cmdb"), citype), body)
 					},
 				},

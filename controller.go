@@ -158,15 +158,18 @@ func (c *controller) GetResource(sel string, format string, a ...interface{}) {
 
 	path := strings.TrimRight(fmt.Sprintf(format, a...), "/")
 
+	// Include field selector
 	if sel != "" {
 		path = fmt.Sprintf("%s?select=%s", path, url.QueryEscape(sel))
 	}
 
+	// Fetch the request
 	res, err = c.ApiRequest("GET", path, nil)
 	if err != nil {
 		Die(err)
 	}
 
+	// Parse the result
 	switch res.StatusCode {
 	case http.StatusOK:
 		c.ApiResult(res)
