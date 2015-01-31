@@ -6,6 +6,8 @@
 
 This project aims to create a fast and powerful CLI to administer Alexandria CMDB via the RESTful API.
 
+For more information, see the [Alexandria CMDB docs](http://cavaliercoder.github.io/alexandria-docs/).
+
 ## License
 
 Alexandria CMDB - Open source configuration management database
